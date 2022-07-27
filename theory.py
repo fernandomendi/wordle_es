@@ -75,10 +75,24 @@ def bestGuess(possibilities, dist, toPrint=False):
     entropies = entropyLst(possibilities, np.array(dist["word"]), toPrint)
     entropiesDF = pd.DataFrame(entropies.items(), columns=["word", "entropy"])
     mergeDF = pd.concat([dist, entropiesDF["entropy"]], axis=1)
-    mergeDF["prob*entr"] = mergeDF["prob"] * mergeDF["entropy"]
-    mostProbable = mergeDF.iloc[mergeDF["prob"].idxmax()]["word"]
+    # mergeDF["prob*entr"] = mergeDF["prob"] * mergeDF["entropy"]
+    # mostProbable = mergeDF.iloc[mergeDF["prob"].idxmax()]["word"]
     mostEntropic = mergeDF.iloc[mergeDF["entropy"].idxmax()]["word"]
-    bestOverall = mergeDF.iloc[mergeDF["prob*entr"].idxmax()]["word"]
+    # bestOverall = mergeDF.iloc[mergeDF["prob*entr"].idxmax()]["word"]
+    return mostEntropic
+
+def bestQuadGuess(possibilities, dist, toPrint=False): # possibilities is a list of 4 lists of possibilities
+    mergeDF = dist
+    entropiesDFs = []
+    for i, poss in enumerate(possibilities):
+        entropies = entropyLst(poss, np.array(dist["word"]), toPrint)
+        entropiesDFs.append(pd.DataFrame(entropies.items(), columns=["word", f"entropy_{i+1}"]))
+    for i, df in enumerate(entropiesDFs):
+        mergeDF = pd.concat([mergeDF, df[f"entropy_{i+1}"]], axis=1)
+    mergeDF["entropy_total"] = mergeDF[["entropy_1", "entropy_2", "entropy_3", "entropy_4"]].sum(axis=1)
+    # mergeDF["prob*entr"] = mergeDF["prob"] * mergeDF["entropy_total"]
+    mostEntropic = mergeDF.iloc[mergeDF["entropy_total"].idxmax()]["word"]
+    # bestOverall = mergeDF.iloc[mergeDF["prob*entr"].idxmax()]["word"]
     return mostEntropic
 
 def bestPair(word, words, toPrint=False):
