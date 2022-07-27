@@ -9,9 +9,12 @@ def wordle():
     mostEntropic = "careo"
     i = 1
     while len(possibilities) > 1:
-        print(f"Intento número {i}: {mostEntropic}")
+        print("-----------------------")
+        print(f"Intento número {i}: ")
+        print(f"La mejor palabra es {mostEntropic}")
+        guess = input("Palabra elegida: ")
         answer = input("Respuesta obtenida con este intento: ")
-        possibilities = possibleSecrets(mostEntropic, answer, possibilities)
+        possibilities = possibleSecrets(guess, answer, possibilities)
         # probs = relativeProbabilities(dist, possibilities)
         print("Palabras posibles: ")
         for word in possibilities:
@@ -24,15 +27,6 @@ def wordle():
             print(f"Hay {len(possibilities)} palabras posibles")
             mostEntropic = bestGuess(possibilities, dist)
             i += 1
-
-# ----------------------------------------------------------------------
-
-dist = getDistLengthN(5)
-words = np.array(dist["word"])
-
-#for word in words:
-#    if "ni" in word[0:1] and "ea" in word[3:4]:
-#        print(word)
 
 # ----------------------------------------------------------------------
 
