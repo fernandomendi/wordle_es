@@ -11,16 +11,16 @@ def quordle():
         print("-----------------------")
         print(f"Intento número {i}: ")
         print(f"La mejor palabra es {mostEntropic}")
-        guess = input("Palabra elegida: ")
+        guess = input("Palabra elegida (pulsa ENTER para elegir la palabra sugerida): ")
+        if guess == "":
+            guess = mostEntropic
         for j in range(4):
             answer = input(f"Respuesta obtenida con este intento en la palabra {j+1}: ")
             if answer != "":
                 poss = possibleSecrets(guess, answer, possibilities[j])
-                # probs = relativeProbabilities(dist, possibilities)
                 print("Palabras posibles: ")
                 for word in poss:
                     print(f"{word}: {round(getProbFromWord(dist, word), 4)}")
-                # print(possibilities)
                 if len(poss) == 0:
                     print("No hay palabras posibles, asegurate de introducir correctamente la respuesta. ")
                     exit()

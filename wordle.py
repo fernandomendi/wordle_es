@@ -12,14 +12,14 @@ def wordle():
         print("-----------------------")
         print(f"Intento número {i}: ")
         print(f"La mejor palabra es {mostEntropic}")
-        guess = input("Palabra elegida: ")
+        guess = input("Palabra elegida (pulsa ENTER para elegir la palabra sugerida): ")
+        if guess == "":
+            guess = mostEntropic
         answer = input("Respuesta obtenida con este intento: ")
         possibilities = possibleSecrets(guess, answer, possibilities)
-        # probs = relativeProbabilities(dist, possibilities)
         print("Palabras posibles: ")
         for word in possibilities:
             print(f"{word}: {round(getProbFromWord(dist, word), 4)}")
-        # print(possibilities)
         if len(possibilities) == 0:
             print("No hay palabras posibles, asegurate de introducir correctamente la respuesta. ")
             break
